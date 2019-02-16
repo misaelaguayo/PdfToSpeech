@@ -8,7 +8,7 @@ import java.io.File;
 
 public class PdfParser {
 
-    public String text(String file)
+    public String text(File file, int start, int end)
     {
         PDFParser parser = null;
         PDDocument pdDoc = null;
@@ -16,16 +16,13 @@ public class PdfParser {
         PDFTextStripper pdfStripper;
 
         String parsedText = "";
-        File filename = new File(file);
 
         try{
-            pdDoc = PDDocument.load(filename);
-
-            /*PDDocument document = new PDDocument();
-            PDPage page = (PDPage) document.getPages().get(0);
-            document.addPage(page);*/
+            pdDoc = PDDocument.load(file);
 
             pdfStripper = new PDFTextStripper();
+            pdfStripper.setStartPage(start);
+            pdfStripper.setEndPage(end);
             parsedText = pdfStripper.getText(pdDoc);
             System.out.println(parsedText.replaceAll("[^A-Za-z0-9. ]+", ""));
         }
