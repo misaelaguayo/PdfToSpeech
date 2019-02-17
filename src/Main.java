@@ -1,3 +1,6 @@
+import marytts.exceptions.MaryConfigurationException;
+import marytts.exceptions.SynthesisException;
+
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,16 +17,33 @@ public class Main {
         JFrame f = new JFrame("PDF to speech program");
         f.setSize(500,300);
         f.setLocation(300,200);
+        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         final JFileChooser fc = new JFileChooser();
         final JButton button = new JButton("Play PDF");
-        f.getContentPane().add(BorderLayout.CENTER, fc);
+
+        final JLabel startLabel = new JLabel();
+        final JLabel endLabel = new JLabel();
+        final JTextField startField = new JTextField();
+        final JTextField endField = new JTextField();
+
+        startLabel.setText("Starting page: ");
+        endLabel.setText("Ending page: ");
+
+        Box indexFields = Box.createHorizontalBox();
+        indexFields.add(startLabel);
+        indexFields.add(startField);
+        indexFields.add(endLabel);
+        indexFields.add(endField);
+
+        f.getContentPane().add(indexFields);
         f.getContentPane().add(BorderLayout.SOUTH, button);
 
         if(fc.showOpenDialog(null) == JFileChooser.APPROVE_OPTION)
         {
             File file = fc.getSelectedFile();
             PdfParser pdf = new PdfParser();
-            pdfText = pdf.text(file,0,1);
+            pdfText = pdf.text(file,295,315);
         }
         else{
             System.out.println("No file was selected");
@@ -35,7 +55,15 @@ public class Main {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                test.say(maryOutput);
+                try {
+                    test.say(maryOutput);
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                } catch (SynthesisException e1) {
+                    e1.printStackTrace();
+                } catch (MaryConfigurationException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
