@@ -11,6 +11,22 @@ import javax.swing.*;
 public class Main {
 
     public static void main(String[] args) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    UIManager.setLookAndFeel(
+                            "javax.swing.plaf.metal.MetalLookAndFeel"
+                    );
+                } catch (Exception ex){
+                    ex.printStackTrace();
+                }
+                //new Find().setVisible(true);
+                new Frame().setVisible(true);
+            }
+        });
+
+        /*
         Speech test = new Speech("cmu-slt-hsmm");
         String pdfText = "";
 
@@ -68,6 +84,6 @@ public class Main {
         });
 
         f.setVisible(true);
-
+*/
     }
 }
